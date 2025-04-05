@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0; background-color:#f7faff;">
+  <div id="container" style="height: 100%"></div>
+
+<script src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+<script>
+  var dom = document.getElementById('container');
+  var myChart = echarts.init(dom);
+  
+  var data = [2, 6, 16, 25, 26, 18]; 
+  var maxValue = Math.max(...data);
+
+  var option = {
+    title: {
+      text: 'Number of website visits - City Mini Libraries',
+      subtext: 'Every 10 days'
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' }
+    },
+    toolbox: {
+      show: true,
+      feature: {
+        dataView: { readOnly: false },
+        magicType: { type: ['line', 'bar'] },
+        restore: {},
+        saveAsImage: {}
+      }
+    },
+    dataZoom: [{ type: 'slider', start: 0, end: 100 }, { type: 'inside' }],
+    animationDuration: 1500,
+    animationEasing: 'elasticOut',
+    xAxis: {
+      type: 'category',
+      data: ['Jan 13', 'Jan 23', 'Feb 3', 'Feb 13', 'Feb 23', 'Mar 1']
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [{
+      type: 'bar',
+      barWidth: '50%',
+      showBackground: true,
+      itemStyle: {
+        shadowBlur: 8,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        shadowOffsetX: 2,
+        shadowOffsetY: 2
+      },
+      data: data.map(value => ({
+        value: value,
+        itemStyle: {
+          color: value === maxValue ? '#f85835' : '#add8e6'
+        }
+      }))
+    }]
+  };
+
+  myChart.setOption(option);
+
+  // 点击事件互动
+  myChart.on('click', function (params) {
+    alert(`📅 Date: ${params.name}\n📈 Website Visits: ${params.value}`);
+  });
+
+  window.addEventListener('resize', myChart.resize);
+</script>
+
+</body>
+</html>
